@@ -38,7 +38,7 @@ on the `Vagrantfile`. Make sure it works
 Install baisc package like `vim` and `git`
 
     ansible-playbook -s -k -u vagrant ansible/nginx.yml
-    
+
 ## Install nginx
 To install nginx run the following command
 
@@ -72,6 +72,10 @@ to
 
     local   all             all                                     md5
 
+Reload postgresql service
+    
+    sudo systemctl reload postgresql
+    
 Now assign privilege to the role `rolename` to read & write to the 
 database `dbname`
 

@@ -19,7 +19,7 @@ Then setup the inventory for ansible.
 
 Add this line to `/etc/ansible/hosts`
 
-    [debian-jessie]
+    [local]
     192.168.33.10
 
 make sure this address are match with `jessie.vm.network "private_network"`

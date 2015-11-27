@@ -60,6 +60,15 @@ User management and database management should be handled manually
     # create role to access database
     createuser -E -l -P rolename
 
+Now assign privilege to the role `rolename` to read & write to the 
+database `dbname`
+
+    # run this as postgresql user
+    psql
+    # inside psql
+    grant all privileges on database dbname to rolename;   
+
+Press `CTRL+D` to logout as `postgres` user. 
 Edit `/etc/postgresql/9.4/main/pg_hba.conf`
     
     sudo vim /etc/postgresql/9.4/main/pg_hba.conf
@@ -75,14 +84,6 @@ to
 Reload postgresql service
     
     sudo systemctl reload postgresql
-    
-Now assign privilege to the role `rolename` to read & write to the 
-database `dbname`
-
-    # run this as postgresql user
-    psql
-    # inside psql
-    grant all privileges on database dbname to rolename;    
 
 Now you can access database `dbname` via `rolename`
 

@@ -13,13 +13,18 @@
   apt: update_cache=true
   register: updated
 
-- name: "Install docker-engine"
+- name: "Install required packages"
   when: updated|success
   apt: name={{item}} state=installed
   with_items:
     - docker-engine
-  notify:
-      - Start Docker
-  handlers:
-   - name: Start Docker
-     service: name=docker state=started
+    - python-pip
+  register: installed
+
+- name: Start Docker
+  when: installed|success
+  service: name=docker state=started
+
+- name: "Install docker-py"
+  when: installed|success
+  pip: name=docker-py state=present

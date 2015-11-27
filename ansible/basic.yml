@@ -9,3 +9,4 @@
      with_items:
        - vim
        - git
+       - apt-transport-https

@@ -1,0 +1,11 @@
+---
+- hosts: local
+  tasks:
+   - name: "Update the package lists"
+     apt: update_cache=true
+
+   - name: Install basic package
+     apt: pkg={{item}} state=installed
+     with_items:
+       - vim
+       - git

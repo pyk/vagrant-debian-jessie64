@@ -1,0 +1,22 @@
+---
+- name: "Create the file /etc/apt/sources.list.d/pgdg.list"
+  copy: src=pgdg.list dest=/etc/apt/sources.list.d owner=root group=root
+  register: repositoryadded
+
+- name: "Import the repository signing key"
+  when: repositoryadded|success
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+  register: keyadded
+
+- name: "Update the package lists"
+  when: keyadded|success
+  apt: update_cache=true
+
+- name: "Install postgresql-9.4"
+  when: keyadded|success
+  apt: name={{item}} state=installed
+  with_items:
+    - postgresql-9.4
+    - postgresql-contrib-9.4
+    - postgresql-client-9.4
+    - libpq-dev

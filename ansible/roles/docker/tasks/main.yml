@@ -18,13 +18,22 @@
   apt: name={{item}} state=installed
   with_items:
     - docker-engine
-    - python-pip
   register: installed
 
 - name: Start Docker
   when: installed|success
   service: name=docker state=started
 
-- name: "Install docker-py"
+- name: Make sure python-pip removed
   when: installed|success
+  apt: name=python-pip state=absent
+  register: pipremoved
+
+- name: Install pip
+  when: pipremoved|success
+  easy_install: name=pip
+  register: pipinstalled
+
+- name: "Install docker-py"
+  when: pipinstalled|success
   pip: name=docker-py state=present

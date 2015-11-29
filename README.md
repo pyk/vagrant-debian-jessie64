@@ -101,3 +101,22 @@ Then add this line to `/etc/hosts` on host machine.
 Access [gitlab.sayoeti.box](http://gitlab.sayoeti.box) via browser on host 
 machine, It may take a minutes to gitlab up and running. Login using `root`
 and `5iveL!fe`.
+
+## Setup continuous delivery
+Install gitlab runner via ansible
+
+    ansible-playbook -s -k -u vagrant ansible/gitlab-runner.yml
+
+Then login to `jessie` machine, add this line to `/etc/hosts`
+
+    127.0.1.1 gitlab.sayoeti.box
+
+Start the runner manually
+
+    sudo gitlab-ci-multi-runner register
+
+Enter url and token for specified project. Go to
+
+    http://gitlab.sayoeti.box/root/[project-name]/runners
+
+to get setup information. Every push on repo will run the build.

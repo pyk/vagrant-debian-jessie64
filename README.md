@@ -88,3 +88,16 @@ Reload postgresql service
 Now you can access database `dbname` via `rolename`
 
     psql -U rolename -d dbname
+
+## Install Gitlab on local machine
+Install via ansible playbook
+
+    ansible-playbook -s -k -u vagrant ansible/gitlab.yml
+
+Then add this line to `/etc/hosts` on host machine.
+
+    192.168.33.10 gitlab.sayoeti.box
+
+Access [gitlab.sayoeti.box](http://gitlab.sayoeti.box) via browser on host 
+machine, It may take a minutes to gitlab up and running. Login using `root`
+and `5iveL!fe`.

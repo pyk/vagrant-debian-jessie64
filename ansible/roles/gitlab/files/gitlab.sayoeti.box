@@ -1,0 +1,38 @@
+# This is configuration for nginx
+# After gitlab is running via docker, we can access via
+# http://gitlab.sayoeti.box via this configuration.
+
+# setup
+# add this line to the /etc/hosts on host machine
+#
+#    192.168.33.10 gitlab.sayoeti.box
+#
+# copy this file to
+# 
+#    /etc/nginx/sites-available
+#
+# create symlink to
+#
+#    ln -s /etc/nginx/sites-available/gitlab.sayoeti.box /etc/nginx/sites-enabled/gitlab.sayoeti.box
+#
+# reload nginx
+#
+#    sudo service nginx reload
+#
+upstream gitlab {
+    server localhost:8080;
+}
+
+server {
+    listen 80;
+    server_name gitlab.sayoeti.box;
+
+    location / {
+        proxy_pass http://gitlab;
+        proxy_redirect      off;
+        proxy_set_header    Host            $host;
+        proxy_set_header    X-Real-IP       $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}

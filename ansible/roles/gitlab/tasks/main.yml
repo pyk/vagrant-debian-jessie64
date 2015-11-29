@@ -1,0 +1,29 @@
+---
+- name: Install gitlab-ce via docker
+  docker: 
+    name: gitlab
+    image: gitlab/gitlab-ce:latest 
+    state: started
+    detach: true 
+    hostname: gitlab.sayoeti.box
+    ports:
+      - "8443:443"
+      - "8080:80"
+      - "2222:22"
+    volumes:
+      - /srv/gitlab/config:/etc/gitlab
+      - /srv/gitlab/logs:/var/log/gitlab
+      - /srv/gitlab/data:/var/opt/gitlab
+    restart_policy: always
+
+- name: Setup nginx configuration
+  copy: src=gitlab.sayoeti.box dest=/etc/nginx/sites-available owner=root group=root
+
+- name: Create symlink to site-enabled
+  shell: ln -s /etc/nginx/sites-available/gitlab.sayoeti.box /etc/nginx/sites-enabled/gitlab.sayoeti.box
+  register: confadded
+
+- name: Reload nginx
+  when: confadded|success
+  service: name=nginx state=reloaded
+
